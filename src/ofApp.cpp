@@ -24,6 +24,9 @@ void ofApp::setup(){
     clipper.addPolyline(blob.getPolyline(), ClipperLib::ptSubject);
     clipper.addPolyline(blob2.getPolyline(), ClipperLib::ptClip);
     
+    started = false;
+    
+    
 }
 
 //--------------------------------------------------------------
@@ -39,17 +42,59 @@ void ofApp::update(){
 //    clips = clipper.getClipped(currentClipperType);
     updateClipper();
     
+/*
+if intersecting
+    if started
+        startTime = currentTime
+        started = false
+     
+     
+*/
+//    started = true;
     if (checkIntersection()) {
         recording = true;
-        playing = false;
-        if (recording) {
-            for (ofPolyline line : clips)
-                recordings.push_back(std::make_pair(currentTime, line));
+        if (!started) {
+            startTime = currentTime;
+            started = true;
         }
     } else {
-        recording = false;
-        playing = true;
+        started = false;
+        
+        if (recording) {
+            endTime = currentTime;
+            elapsedTime = endTime - startTime;
+            recording = false;
+        }
     }
+    
+//    if (started) startTime = currentTime;
+//
+//    if (checkIntersection()) {
+//        recording = true;
+//        playing = false;
+//
+//        if (!started) {
+//            startTime = currentTime;
+//            started = true;
+//        }
+//
+//        if (recording) {
+//            for (ofPolyline line : clips)
+//                recordings.push_back(std::make_pair(currentTime, line));
+//        }
+//    } else {
+//        if (recording) {
+//            playing = true;
+////            started = false;
+//            endTime = currentTime;
+//            elapsed = endTime - startTime;
+////            cout << "Length of recording: " << elapsed << endl;
+//            recording = false;
+//        }
+//    }
+    
+    cout << startTime << ", " << endTime << ", " << elapsedTime << endl;
+//    cout << started << ", " << startTime << endl;
 
 //    blobBounds = blob.getBoundingBox();
 //

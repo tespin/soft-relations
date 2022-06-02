@@ -16,6 +16,12 @@ class ofApp : public ofBaseApp{
         std::vector<ofPolyline> clips;
         std::vector<std::pair<float, ofPolyline> > recordings;
         float currentTime;
+        float startTime;
+        float endTime;
+        float elapsedTime;
+        
+        bool started;
+        bool ended;
         bool recording;
         bool playing;
     
