@@ -3,3 +3,4 @@ An openFrameworks project that records and plays back the intersection between t
 To do:
 - optimize intersection checking
 - add vertex shader
+- add timer logic

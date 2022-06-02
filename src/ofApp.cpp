@@ -40,11 +40,15 @@ void ofApp::update(){
     updateClipper();
     
     if (checkIntersection()) {
-        for (ofPolyline line : clips)
-            recordings.push_back(std::make_pair(currentTime, line));
-        cout << "added at " << currentTime << endl;
+        recording = true;
+        playing = false;
+        if (recording) {
+            for (ofPolyline line : clips)
+                recordings.push_back(std::make_pair(currentTime, line));
+        }
     } else {
-        cout << "not intersecting" << endl;
+        recording = false;
+        playing = true;
     }
 
 //    blobBounds = blob.getBoundingBox();

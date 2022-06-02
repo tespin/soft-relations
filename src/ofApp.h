@@ -16,6 +16,8 @@ class ofApp : public ofBaseApp{
         std::vector<ofPolyline> clips;
         std::vector<std::pair<float, ofPolyline> > recordings;
         float currentTime;
+        bool recording;
+        bool playing;
     
         ofx::Clipper clipper;
         ClipperLib::ClipType currentClipperType;
