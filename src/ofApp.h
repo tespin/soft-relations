@@ -20,10 +20,9 @@ class ofApp : public ofBaseApp{
         float endTime;
         float elapsedTime;
         
-        bool started;
-        bool ended;
-        bool recording;
-        bool playing;
+        bool hasStarted;
+        bool hasEnded;
+        bool isRecording;
     
         ofx::Clipper clipper;
         ClipperLib::ClipType currentClipperType;
@@ -45,7 +44,7 @@ class ofApp : public ofBaseApp{
 		void draw();
     
         void updateClipper();
-        bool checkIntersection();
+        bool isIntersecting();
     
 //        void drawBlob();
 //        void updateBlob(ofPolyline& polyline, ofVec3f position, float w, float h);

@@ -24,7 +24,7 @@ void ofApp::setup(){
     clipper.addPolyline(blob.getPolyline(), ClipperLib::ptSubject);
     clipper.addPolyline(blob2.getPolyline(), ClipperLib::ptClip);
     
-    started = false;
+    hasStarted = false;
     
     
 }
@@ -41,29 +41,20 @@ void ofApp::update(){
     
 //    clips = clipper.getClipped(currentClipperType);
     updateClipper();
-    
-/*
-if intersecting
-    if started
-        startTime = currentTime
-        started = false
-     
-     
-*/
-//    started = true;
-    if (checkIntersection()) {
-        recording = true;
-        if (!started) {
+
+    if (isIntersecting()) {
+        isRecording = true;
+        if (!hasStarted) {
             startTime = currentTime;
-            started = true;
+            hasStarted = true;
         }
     } else {
-        started = false;
+        hasStarted = false;
         
-        if (recording) {
+        if (isRecording) {
             endTime = currentTime;
             elapsedTime = endTime - startTime;
-            recording = false;
+            isRecording = false;
         }
     }
     
@@ -131,7 +122,7 @@ void ofApp::updateClipper() {
     clips = clipper.getClipped(currentClipperType);
 }
 
-bool ofApp::checkIntersection() {
+bool ofApp::isIntersecting() {
     for (auto& v: blob.getPolyline() ) {
         if (blob2.getPolyline().inside(v)) return true;
     }
