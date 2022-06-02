@@ -39,13 +39,13 @@ void ofApp::update(){
 //    clips = clipper.getClipped(currentClipperType);
     updateClipper();
     
-//    if (checkIntersection()) {
-//        for (auto line : clips) {
-//            recording.push_back(line);
-//        }
-//    } else {
-//        cout << "not intersecting" << endl;
-//    }
+    if (checkIntersection()) {
+        for (ofPolyline line : clips)
+            recordings.push_back(std::make_pair(currentTime, line));
+        cout << "added at " << currentTime << endl;
+    } else {
+        cout << "not intersecting" << endl;
+    }
 
 //    blobBounds = blob.getBoundingBox();
 //

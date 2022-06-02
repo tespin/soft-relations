@@ -14,8 +14,8 @@ class ofApp : public ofBaseApp{
         Blob blob;
         Blob blob2;
         std::vector<ofPolyline> clips;
-        std::vector<ofPolyline> recording;
-    float currentTime;
+        std::vector<std::pair<float, ofPolyline> > recordings;
+        float currentTime;
     
         ofx::Clipper clipper;
         ClipperLib::ClipType currentClipperType;
