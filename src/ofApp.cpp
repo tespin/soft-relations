@@ -25,7 +25,8 @@ void ofApp::setup(){
     clipper.addPolyline(blob2.getPolyline(), ClipperLib::ptClip);
     
     hasStarted = false;
-    
+    hasEnded = false;
+    replayStarted = false;
     
 }
 
@@ -43,11 +44,17 @@ void ofApp::update(){
     updateClipper();
 
     if (isIntersecting()) {
+        replayStarted = false;
         isRecording = true;
         if (!hasStarted) {
             startTime = currentTime;
             hasStarted = true;
         }
+        
+        for (ofPolyline line: clips) {
+            recordings.push_back(std::make_pair(currentTime, line));
+        }
+        
     } else {
         hasStarted = false;
         
@@ -56,6 +63,26 @@ void ofApp::update(){
             elapsedTime = endTime - startTime;
             isRecording = false;
         }
+        
+        // replay
+        if (currentReplayTime >= startTime + elapsedTime) replayStartTime = currentTime;
+        currentReplayTime = currentTime - replayStartTime + startTime;
+        
+//        std::vector<std::pair<float, ofPolyline>>::iterator lower = std::lower_bound(recordings.begin(), recordings.end(), currentReplayTime, [](std::pair<float, ofPolyline>& a, std::pair<float, ofPolyline>& b) {
+//            return a.first < b.first;
+//        });
+        
+        auto lower = std::lower_bound(recordings.begin(), recordings.end(), std::make_pair(currentReplayTime, currentReplayContour), [](std::pair<float, ofPolyline> a, std::pair<float, ofPolyline> b) {
+            return a.first < b.first;
+        });
+        
+        if (lower != recordings.end()) {
+            currentReplayContour = lower->second;
+            replayStarted = true;
+        }
+//        currentReplayContour = lower->second;
+        
+//        cout << lower->first << endl;
     }
     
 //    if (started) startTime = currentTime;
@@ -84,7 +111,7 @@ void ofApp::update(){
 //        }
 //    }
     
-    cout << startTime << ", " << endTime << ", " << elapsedTime << endl;
+    cout << startTime << ", " << endTime << ", " << elapsedTime << ", " << currentReplayTime << endl;
 //    cout << started << ", " << startTime << endl;
 
 //    blobBounds = blob.getBoundingBox();
@@ -97,14 +124,20 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetBackgroundColor(255);
-    ofSetColor(0);
-    blob.draw();
-    blob2.draw();
     
-    for (auto& line: clips) {
-        ofSetColor(255, 0, 255);
-        line.draw();
+    if (replayStarted) {
+        currentReplayContour.draw();
+    } else {
+        ofSetColor(0);
+        blob.draw();
+        blob2.draw();
+        
+        for (auto& line: clips) {
+            ofSetColor(255, 0, 255);
+            line.draw();
+        }
     }
+//    currentReplayContour.draw();
     
 //    for (auto& r: recording) {
 //        r.draw();

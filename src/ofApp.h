@@ -23,6 +23,7 @@ class ofApp : public ofBaseApp{
         bool hasStarted;
         bool hasEnded;
         bool isRecording;
+        bool replayStarted;
     
         ofx::Clipper clipper;
         ClipperLib::ClipType currentClipperType;
@@ -37,7 +38,9 @@ class ofApp : public ofBaseApp{
         float yoff;
         float radius;
     
-//        ofPolyline buildBlob(int resolution);
+        ofPolyline currentReplayContour;
+        float currentReplayTime;
+        float replayStartTime;
     
         void setup();
 		void update();
