@@ -8,9 +8,6 @@ class ofApp : public ofBaseApp{
 
 	public:
     
-//        ofPolyline blob;
-//        ofRectangle blobBounds;
-    
         Blob blob;
         Blob blob2;
         std::vector<ofPolyline> clips;
@@ -32,9 +29,7 @@ class ofApp : public ofBaseApp{
         ofVec3f speed;
     
         ofVec3f pos2;
-    
-//        float xspeed = 1;
-//        float yspeed = 3.3;
+
         float yoff;
         float radius;
     
@@ -48,19 +43,5 @@ class ofApp : public ofBaseApp{
     
         void updateClipper();
         bool isIntersecting();
-    
-//        void drawBlob();
-//        void updateBlob(ofPolyline& polyline, ofVec3f position, float w, float h);
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
 		
 };

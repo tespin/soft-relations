@@ -40,7 +40,6 @@ void ofApp::update(){
     blob.update(pos, radius, radius);
     blob2.update(pos2, radius, radius);
     
-//    clips = clipper.getClipped(currentClipperType);
     updateClipper();
 
     if (isIntersecting()) {
@@ -80,36 +79,7 @@ void ofApp::update(){
             currentReplayContour = lower->second;
             replayStarted = true;
         }
-//        currentReplayContour = lower->second;
-        
-//        cout << lower->first << endl;
     }
-    
-//    if (started) startTime = currentTime;
-//
-//    if (checkIntersection()) {
-//        recording = true;
-//        playing = false;
-//
-//        if (!started) {
-//            startTime = currentTime;
-//            started = true;
-//        }
-//
-//        if (recording) {
-//            for (ofPolyline line : clips)
-//                recordings.push_back(std::make_pair(currentTime, line));
-//        }
-//    } else {
-//        if (recording) {
-//            playing = true;
-////            started = false;
-//            endTime = currentTime;
-//            elapsed = endTime - startTime;
-////            cout << "Length of recording: " << elapsed << endl;
-//            recording = false;
-//        }
-//    }
     
     cout << startTime << ", " << endTime << ", " << elapsedTime << ", " << currentReplayTime << endl;
 //    cout << started << ", " << startTime << endl;
@@ -137,11 +107,6 @@ void ofApp::draw(){
             line.draw();
         }
     }
-//    currentReplayContour.draw();
-    
-//    for (auto& r: recording) {
-//        r.draw();
-//    }
     
     ofNoFill();
 //    ofDrawRectangle(blobBounds);
@@ -160,58 +125,4 @@ bool ofApp::isIntersecting() {
         if (blob2.getPolyline().inside(v)) return true;
     }
     return false;
-}
-
-//--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-}
-
-//--------------------------------------------------------------
-void ofApp::keyReleased(int key){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseMoved(int x, int y ){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::gotMessage(ofMessage msg){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
 }
