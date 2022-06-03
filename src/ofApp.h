@@ -1,24 +1,47 @@
 #pragma once
 
 #include "ofMain.h"
+#include "Blob.hpp"
+#include "ofxClipper.h"
 
 class ofApp : public ofBaseApp{
 
 	public:
-		void setup();
+    
+        Blob blob;
+        Blob blob2;
+        std::vector<ofPolyline> clips;
+        std::vector<std::pair<float, ofPolyline> > recordings;
+        float currentTime;
+        float startTime;
+        float endTime;
+        float elapsedTime;
+        
+        bool hasStarted;
+        bool hasEnded;
+        bool isRecording;
+        bool replayStarted;
+    
+        ofx::Clipper clipper;
+        ClipperLib::ClipType currentClipperType;
+    
+        ofVec3f pos;
+        ofVec3f speed;
+    
+        ofVec3f pos2;
+
+        float yoff;
+        float radius;
+    
+        ofPolyline currentReplayContour;
+        float currentReplayTime;
+        float replayStartTime;
+    
+        void setup();
 		void update();
 		void draw();
-
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void windowResized(int w, int h);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+    
+        void updateClipper();
+        bool isIntersecting();
 		
 };
