@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    radius = 100;
+    radius = 200;
     
     pos.x = ofGetWidth() / 2 - radius / 2;
     pos.y = ofGetHeight() / 2;
@@ -80,9 +80,8 @@ void ofApp::update(){
             replayStarted = true;
         }
     }
-    
-    cout << startTime << ", " << endTime << ", " << elapsedTime << ", " << currentReplayTime << endl;
-//    cout << started << ", " << startTime << endl;
+
+    //    cout << started << ", " << startTime << endl;
 
 //    blobBounds = blob.getBoundingBox();
 //
@@ -96,6 +95,7 @@ void ofApp::draw(){
     ofSetBackgroundColor(255);
     
     if (replayStarted) {
+        ofSetColor(255, 0, 255);
         currentReplayContour.draw();
     } else {
         ofSetColor(0);
