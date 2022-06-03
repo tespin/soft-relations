@@ -7,4 +7,4 @@ To do:
 - add vertex shader
 - add face tracking
 - add multiple recordings
-
+- add filled shape drawing
