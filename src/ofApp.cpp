@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    radius = 200;
+    radius = 100;
     
     pos.x = ofGetWidth() / 2 - radius / 2;
     pos.y = ofGetHeight() / 2;

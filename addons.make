@@ -1,1 +1,4 @@
 ofxClipper
+ofxOpenCv
+ofxCv
+ofxFaceTracker2

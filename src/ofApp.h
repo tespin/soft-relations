@@ -25,10 +25,13 @@ class ofApp : public ofBaseApp{
         ofx::Clipper clipper;
         ClipperLib::ClipType currentClipperType;
     
-        ofVec3f pos;
-        ofVec3f speed;
+//        ofVec3f pos;
+//        ofVec3f speed;
+//        ofVec3f pos2;
     
-        ofVec3f pos2;
+        glm::vec3 pos;
+        glm::vec3 pos2;
+        glm::vec3 speed;
 
         float yoff;
         float radius;
