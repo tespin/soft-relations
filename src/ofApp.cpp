@@ -37,10 +37,10 @@ void ofApp::setup(){
 void ofApp::update(){
     currentTime = ofGetElapsedTimef();
     
-//    cam.update();
-//    if (cam.isFrameNew()) {
-//        tracker.update(cam);
-//    }
+    cam.update();
+    if (cam.isFrameNew()) {
+        tracker.update(cam);
+    }
     
     pos.x = ofGetMouseX();
     pos.y = ofGetMouseY();
@@ -100,18 +100,18 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofSetBackgroundColor(255);
-    
-//    cam.draw(0, 0);
+//    ofSetBackgroundColor(255);
+    ofSetColor(255);
+    cam.draw(0, 0);
 //
-//    tracker.drawDebug();
-//    tracker.drawDebugPose();
+    tracker.drawDebug();
+    tracker.drawDebugPose();
     
     if (replayStarted) {
         ofSetColor(255, 0, 255);
         currentReplayContour.draw();
     } else {
-        ofSetColor(0);
+        ofSetColor(255);
         blob.draw();
         blob2.draw();
 
