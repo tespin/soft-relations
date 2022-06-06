@@ -28,11 +28,19 @@ void ofApp::setup(){
     hasEnded = false;
     replayStarted = false;
     
+    cam.setup(1280, 720);
+    tracker.setup();
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     currentTime = ofGetElapsedTimef();
+    
+//    cam.update();
+//    if (cam.isFrameNew()) {
+//        tracker.update(cam);
+//    }
     
     pos.x = ofGetMouseX();
     pos.y = ofGetMouseY();
@@ -94,6 +102,11 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetBackgroundColor(255);
     
+//    cam.draw(0, 0);
+//
+//    tracker.drawDebug();
+//    tracker.drawDebugPose();
+    
     if (replayStarted) {
         ofSetColor(255, 0, 255);
         currentReplayContour.draw();
@@ -101,14 +114,14 @@ void ofApp::draw(){
         ofSetColor(0);
         blob.draw();
         blob2.draw();
-        
+
         for (auto& line: clips) {
             ofSetColor(255, 0, 255);
             line.draw();
         }
     }
     
-    ofNoFill();
+//    ofNoFill();
 //    ofDrawRectangle(blobBounds);
 }
 

@@ -8,3 +8,5 @@ To do:
 - add face tracking
 - add multiple recordings
 - add filled shape drawing
+- for multiple shapes, either osc(online) or two cameras (local)
+- add face polyline
