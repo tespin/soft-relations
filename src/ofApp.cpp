@@ -2,7 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
-    radius = 200;
+    radius = 100;
     
     pos.x = ofGetWidth() / 2 - radius / 2;
     pos.y = ofGetHeight() / 2;
@@ -28,11 +28,19 @@ void ofApp::setup(){
     hasEnded = false;
     replayStarted = false;
     
+    cam.setup(1280, 720);
+    tracker.setup();
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     currentTime = ofGetElapsedTimef();
+    
+    cam.update();
+    if (cam.isFrameNew()) {
+        tracker.update(cam);
+    }
     
     pos.x = ofGetMouseX();
     pos.y = ofGetMouseY();
@@ -92,23 +100,28 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    ofSetBackgroundColor(255);
+//    ofSetBackgroundColor(255);
+    ofSetColor(255);
+    cam.draw(0, 0);
+//
+    tracker.drawDebug();
+    tracker.drawDebugPose();
     
     if (replayStarted) {
         ofSetColor(255, 0, 255);
         currentReplayContour.draw();
     } else {
-        ofSetColor(0);
+        ofSetColor(255);
         blob.draw();
         blob2.draw();
-        
+
         for (auto& line: clips) {
             ofSetColor(255, 0, 255);
             line.draw();
         }
     }
     
-    ofNoFill();
+//    ofNoFill();
 //    ofDrawRectangle(blobBounds);
 }
 
