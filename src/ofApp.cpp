@@ -47,16 +47,18 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 //    currentTime = ofGetElapsedTimef();
-    cam1.update();
-    cam2.update();
-    
-    if (cam1.isFrameNew()) {
-        tracker1.update(cam1);
-    }
-    
-    if (cam2.isFrameNew()) {
-        tracker2.update(cam2);
-    }
+//    cam1.update();
+//    cam2.update();
+//
+//    if (cam1.isFrameNew()) {
+//        tracker1.update(cam1);
+//    }
+//
+//    if (cam2.isFrameNew()) {
+//        tracker2.update(cam2);
+//    }
+    updateTracker(cam1, tracker1, face1);
+    updateTracker(cam2, tracker2, face2);
 //    cam.update();
 //    if (cam.isFrameNew()) {
 //        tracker.update(cam);
@@ -143,8 +145,11 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    tracker1.drawDebug();
-    tracker2.drawDebug();
+    drawFace(face1);
+    drawFace(face2);
+//    tracker1.drawDebug();
+//    tracker2.drawDebug();
+    
 //    ofSetBackgroundColor(255);
 //    cam.draw(0, 0);
 ////
@@ -187,3 +192,27 @@ void ofApp::draw(){
 //    }
 //    return false;
 //}
+void ofApp::updateTracker(ofVideoGrabber& grabber, ofxFaceTracker2& tracker, ofPolyline& face) {
+    grabber.update();
+    if (grabber.isFrameNew()) {
+        tracker.update(grabber);
+        
+        face = getFacePolyline(tracker);
+    }
+}
+
+ofPolyline ofApp::getFacePolyline(ofxFaceTracker2& tracker) {
+    //        if (tracker.getInstances().size() != 0) {
+    //            ofxFaceTracker2Instance instance = tracker.getInstances()[0];
+    //            currentFace = instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::FACE_OUTLINE);
+    if (tracker.getInstances().size() != 0) {
+        ofxFaceTracker2Instance instance = tracker.getInstances()[0];
+        return instance.getLandmarks().getImageFeature(ofxFaceTracker2Landmarks::FACE_OUTLINE);
+    } else {
+        return ofPolyline();
+    }
+}
+
+void ofApp::drawFace(ofPolyline& face) {
+    if (face.size() != 0) face.draw();
+}

@@ -41,6 +41,9 @@ class ofApp : public ofBaseApp{
         void setup();
 		void update();
 		void draw();
+        void updateTracker(ofVideoGrabber& grabber, ofxFaceTracker2& tracker, ofPolyline& face);
+        ofPolyline getFacePolyline(ofxFaceTracker2& tracker);
+        void drawFace(ofPolyline& face);
     
 //        void updateClipper();
 //        bool isIntersecting();
