@@ -11,3 +11,4 @@ To do:
 - for multiple shapes, either osc(online) or two cameras (local)
 - add face polyline
 - test emscripten
+- normalize face polyline
