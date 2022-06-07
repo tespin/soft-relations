@@ -45,21 +45,26 @@ class ofApp : public ofBaseApp{
 //        void updateClipper();
 //        bool isIntersecting();
     
-    ofxFaceTracker2 tracker;
-    ofVideoGrabber cam;
+        ofxFaceTracker2 tracker1;
+        ofxFaceTracker2 tracker2;
+        ofVideoGrabber cam1;
+        ofVideoGrabber cam2;
+
+        ofPolyline face1;
+        ofPolyline face2;
     
-    ofPolyline currentFace;
-    int currentLabel;
-    int prevLabel;
-    
-    float currentTime;
-    float startTIme;
-    float endTime;
-    float elapsedTime;
-    
-    bool hasStarted;
-    bool hasEnded;
-    bool isRecording;
-    bool replayzStarted;
+//    ofPolyline currentFace;
+//    int currentLabel;
+//    int prevLabel;
+//
+//    float currentTime;
+//    float startTIme;
+//    float endTime;
+//    float elapsedTime;
+//
+//    bool hasStarted;
+//    bool hasEnded;
+//    bool isRecording;
+//    bool replayStarted;
 		
 };
