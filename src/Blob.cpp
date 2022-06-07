@@ -15,7 +15,7 @@ void Blob::build(int resolution) {
     polyline.close();
 }
 
-void Blob::update(ofVec3f position, float w, float h) {
+void Blob::update(glm::vec3 position, float w, float h) {
     float xoff = 0;
     float step = TWO_PI / polyline.size();
     for (int i = 0; i < polyline.size(); i++) {
