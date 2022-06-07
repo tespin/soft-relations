@@ -41,12 +41,12 @@ class ofApp : public ofBaseApp{
         void setup();
 		void update();
 		void draw();
+        
         void updateTracker(ofVideoGrabber& grabber, ofxFaceTracker2& tracker, ofPolyline& face);
         ofPolyline getFacePolyline(ofxFaceTracker2& tracker);
         void drawFace(ofPolyline& face);
-    
-//        void updateClipper();
-//        bool isIntersecting();
+        std::vector<ofPolyline> getClips(ofPolyline& face1, ofPolyline& face2, ClipperLib::ClipType clipType);
+        bool isIntersecting(ofPolyline& face1, ofPolyline& face2);
     
         ofxFaceTracker2 tracker1;
         ofxFaceTracker2 tracker2;
@@ -55,6 +55,23 @@ class ofApp : public ofBaseApp{
 
         ofPolyline face1;
         ofPolyline face2;
+    
+        ofx::Clipper clipper;
+        std::vector<ofPolyline> clips;
+        std::vector<std::pair<float, ofPolyline> > recordings;
+        ofPolyline currentReplayContour;
+    
+        float currentTime;
+        float startTime;
+        float endTime;
+        float elapsedTime;
+        float currentReplayTime;
+        float replayStartTime;
+    
+        bool hasStarted;
+        bool hasEnded;
+        bool isRecording;
+        bool replayStarted;
     
 //    ofPolyline currentFace;
 //    int currentLabel;

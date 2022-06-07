@@ -19,7 +19,6 @@ void ofApp::setup(){
 //    blob.update(pos, radius, radius);
 //    blob2.update(pos2, radius, radius);
 //
-//    currentClipperType = ClipperLib::ctIntersection;
 //
 //    clipper.addPolyline(blob.getPolyline(), ClipperLib::ptSubject);
 //    clipper.addPolyline(blob2.getPolyline(), ClipperLib::ptClip);
@@ -42,11 +41,14 @@ void ofApp::setup(){
     cam2.setDeviceID(1);
     cam2.setup(1280, 720);
     tracker2.setup();
+    
+//    clipper.addPolyline(ofPolyline(), ClipperLib::ptSubject);
+//    clipper.addPolyline(ofPolyline(), ClipperLib::ptClip);
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-//    currentTime = ofGetElapsedTimef();
+    currentTime = ofGetElapsedTimef();
 //    cam1.update();
 //    cam2.update();
 //
@@ -57,8 +59,87 @@ void ofApp::update(){
 //    if (cam2.isFrameNew()) {
 //        tracker2.update(cam2);
 //    }
+    cout << "updating" << endl;
     updateTracker(cam1, tracker1, face1);
     updateTracker(cam2, tracker2, face2);
+    cout << "updated" << endl;
+    
+    cout << "getting clips" << endl;
+    if (face1.size() != 0 && face2.size() != 0) {
+        clips = getClips(face1, face2, ClipperLib::ctIntersection);
+        
+//        if (isIntersecting(face1, face2)) {
+//            replayStarted = false;
+//            isRecording = true;
+//            if (!hasStarted) {
+//                startTime = currentTime;
+//                hasStarted = true;
+//            }
+//
+//            for (ofPolyline& line: clips) {
+//                recordings.push_back(std::make_pair(currentTime, line));
+//            }
+//
+//        } else {
+//            hasStarted = false;
+//
+//            if (isRecording) {
+//                endTime = currentTime;
+//                elapsedTime = endTime - startTime;
+//                isRecording = false;
+//            }
+//
+//            // replay
+//            if (currentReplayTime >= startTime + elapsedTime) replayStartTime = currentTime;
+//            currentReplayTime = currentTime - replayStartTime + startTime;
+//
+//            auto lower = std::lower_bound(recordings.begin(), recordings.end(), std::make_pair(currentReplayTime, currentReplayContour), [](std::pair<float, ofPolyline> a, std::pair<float, ofPolyline> b) {
+//                return a.first < b.first;
+//            });
+//
+//            if (lower != recordings.end()) {
+//                currentReplayContour = lower->second;
+//                replayStarted = true;
+//            }
+//        }
+    }
+    
+    if (isIntersecting(face1, face2)) {
+        replayStarted = false;
+        isRecording = true;
+        if (!hasStarted) {
+            startTime = currentTime;
+            hasStarted = true;
+        }
+
+        for (ofPolyline line: clips) {
+            recordings.push_back(std::make_pair(currentTime, line));
+        }
+
+    } else {
+        hasStarted = false;
+
+        if (isRecording) {
+            endTime = currentTime;
+            elapsedTime = endTime - startTime;
+            isRecording = false;
+        }
+
+        // replay
+        if (currentReplayTime >= startTime + elapsedTime) replayStartTime = currentTime;
+        currentReplayTime = currentTime - replayStartTime + startTime;
+
+        auto lower = std::lower_bound(recordings.begin(), recordings.end(), std::make_pair(currentReplayTime, currentReplayContour), [](std::pair<float, ofPolyline> a, std::pair<float, ofPolyline> b) {
+            return a.first < b.first;
+        });
+
+        if (lower != recordings.end()) {
+            currentReplayContour = lower->second;
+            replayStarted = true;
+        }
+    }
+    
+
 //    cam.update();
 //    if (cam.isFrameNew()) {
 //        tracker.update(cam);
@@ -145,8 +226,8 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    drawFace(face1);
-    drawFace(face2);
+//    drawFace(face1);
+//    drawFace(face2);
 //    tracker1.drawDebug();
 //    tracker2.drawDebug();
     
@@ -160,19 +241,21 @@ void ofApp::draw(){
 //        currentFace.draw();
 //    }
 //    
-//    if (replayStarted) {
-//        ofSetColor(255, 0, 255);
-//        currentReplayContour.draw();
-//    } else {
-//        ofSetColor(255);
-//        blob.draw();
-//        blob2.draw();
-//
-//        for (auto& line: clips) {
-//            ofSetColor(255, 0, 255);
-//            line.draw();
-//        }
-//    }
+    if (replayStarted) {
+        cout << "drawing replay" << endl;
+        ofSetColor(255, 0, 255);
+        currentReplayContour.draw();
+    } else {
+        cout << "drawing intersection" << endl;
+        ofSetColor(255);
+        drawFace(face1);
+        drawFace(face2);
+
+        for (auto& line: clips) {
+            ofSetColor(255, 0, 255);
+            line.draw();
+        }
+    }
     
 //    ofNoFill();
 //    ofDrawRectangle(blobBounds);
@@ -215,4 +298,22 @@ ofPolyline ofApp::getFacePolyline(ofxFaceTracker2& tracker) {
 
 void ofApp::drawFace(ofPolyline& face) {
     if (face.size() != 0) face.draw();
+}
+
+std::vector<ofPolyline> ofApp::getClips(ofPolyline& face1, ofPolyline& face2, ClipperLib::ClipType clipType) {
+    clips.clear();
+    clipper.Clear();
+//    cout << "adding" << endl;
+    clipper.addPolyline(face1, ClipperLib::ptSubject);
+    clipper.addPolyline(face2, ClipperLib::ptClip);
+//    cout << "added" << endl;
+    
+    return clipper.getClipped(clipType);
+}
+
+bool ofApp::isIntersecting(ofPolyline& face1, ofPolyline& face2) {
+    for (glm::vec3& v : face1) {
+        if (face2.inside(v)) return true;
+    }
+    return false;
 }
