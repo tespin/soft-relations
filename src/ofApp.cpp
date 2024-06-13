@@ -6,11 +6,22 @@ void ofApp::setup(){
     
     colorImg.allocate(1920, 1080);
     grayImg.allocate(1920, 1080);
-    canvas.allocate(1920, 1080, GL_RGBA);
-    canvas2.allocate(1920, 1080, GL_RGBA);
-    vignette.allocate(1920, 1080);
+
+    shapeFbo.allocate(1920, 1080);
+    cameraFbo.allocate(1920, 1080);
     
     maxContours = 15;
+    
+    for (std::size_t i = 0; i < maxContours; i++) {
+        int randRadius = ofRandom(25, 200);
+        int randX = ofRandom(randRadius, ofGetWidth()-randRadius/2);
+        int randY = ofRandom(randRadius, ofGetHeight()-randRadius/2);
+        
+        ofPath path;
+        path.circle(randX, randY, randRadius);
+        
+        contours.push_back(path);
+    }
     
     threshold = 80;
     
@@ -18,11 +29,14 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    cam.update();
-    path.clear();
+//    for (std::size_t i = 0; i < contours.size(); i++) {
+//        contours[i].clear();
+//    }
+        cam.update();
+//    path.clear();
 //    ofEnableAlphaBlending();
     
-    path.circle(ofGetMouseX(), ofGetMouseY(), 300);
+//    path.circle(ofGetMouseX(), ofGetMouseY(), 300);
     
 //    if (cam.isFrameNew()) {
 //    }
@@ -40,20 +54,35 @@ void ofApp::update(){
 //--------------------------------------------------------------
 void ofApp::draw(){
 //    path.draw();
-    ofSetBackgroundColor(255);
-    canvas.begin();
+//    ofSetBackgroundColor(255);
+    
+    shapeFbo.begin();
     ofClear(255, 255, 255, 0);
-    path.draw();
-    canvas.end();
-//
-    cam.getTexture().setAlphaMask(canvas.getTexture());
-////    cam.draw(0, 0);
-    canvas2.begin();
+    for (std::size_t i = 0; i < contours.size(); i++) {
+        contours[i].draw();
+    }
+    shapeFbo.end();
+    
+    shapeFbo.draw(0, 0);
+//    canvas.begin();
+//    ofClear(255, 255, 255, 0);
+//    path.draw();
+//    canvas.end();
+////
+    cam.getTexture().setAlphaMask(shapeFbo.getTexture());
+    cameraFbo.begin();
     ofClear(255);
     cam.draw(0, 0);
-    canvas2.end();
-//
-    canvas2.draw(0, 0);
+    cameraFbo.end();
+    
+    cameraFbo.draw(0, 0);
+//////    cam.draw(0, 0);
+//    canvas2.begin();
+//    ofClear(255);
+//    cam.draw(0, 0);
+//    canvas2.end();
+////
+//    canvas2.draw(0, 0);
 //    //    video.draw(0, 0);
 //    grayImg.draw(0, 0);
 //    for (int i = 0; i < contourFinder.nBlobs; i++) {

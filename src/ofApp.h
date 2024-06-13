@@ -14,6 +14,7 @@ class ofApp : public ofBaseApp{
     
         ofPath path;
         std::vector<ofPath> contours;
+        std::vector<ofxCvBlob> blobs;
         int maxContours;
     
         ofVideoGrabber cam;
@@ -23,11 +24,6 @@ class ofApp : public ofBaseApp{
         ofxCvContourFinder contourFinder;
         int threshold;
 		
-        ofFbo canvas;
-        ofFbo canvas2;
-        ofFbo vignette;
-    ofFbo shapeFbo;
-    ofFbo cameraFbo;
-    
-        std::vector<ofFbo> shapeFbos;
+        ofFbo shapeFbo;
+        ofFbo cameraFbo;
 };
