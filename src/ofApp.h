@@ -12,11 +12,22 @@ class ofApp : public ofBaseApp{
 		void update();
 		void draw();
     
-        ofVideoGrabber video;
+        ofPath path;
+        std::vector<ofPath> contours;
+        int maxContours;
+    
+        ofVideoGrabber cam;
         ofxCvColorImage colorImg;
         ofxCvGrayscaleImage grayImg;
         ofxCvGrayscaleImage grayDiff;
         ofxCvContourFinder contourFinder;
         int threshold;
 		
+        ofFbo canvas;
+        ofFbo canvas2;
+        ofFbo vignette;
+    ofFbo shapeFbo;
+    ofFbo cameraFbo;
+    
+        std::vector<ofFbo> shapeFbos;
 };
