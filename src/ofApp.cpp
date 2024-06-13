@@ -51,46 +51,17 @@ void ofApp::update(){
             }
         }
     }
-    //    for (std::size_t i = 0; i < contours.size(); i++) {
-//        contours[i].clear();
-//    }
-//    path.clear();
-//    ofEnableAlphaBlending();
-    
-//    path.circle(ofGetMouseX(), ofGetMouseY(), 300);
-    
-//    if (cam.isFrameNew()) {
-//    }
-    
-//
-//    if (video.isFrameNew()) {
-//        colorImg.setFromPixels(video.getPixels());
-//        grayImg = colorImg;
-//
-//        grayImg.threshold(threshold);
-//        contourFinder.findContours(grayImg, 430, ((ofGetScreenWidth()*ofGetScreenHeight())/3), 10, true);
-//    }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-//    path.draw();
-//    ofSetBackgroundColor(255);
-    
     shapeFbo.begin();
     ofClear(255, 255, 255, 0);
     for (std::size_t i = 0; i < paths.size(); i++) {
         paths[i].draw();
     }
-//    contourFinder.draw();
     shapeFbo.end();
-    
-//    shapeFbo.draw(0, 0);
-//    canvas.begin();
-//    ofClear(255, 255, 255, 0);
-//    path.draw();
-//    canvas.end();
-////
+
     cam.getTexture().setAlphaMask(shapeFbo.getTexture());
     cameraFbo.begin();
     ofClear(255);
