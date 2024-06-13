@@ -4,35 +4,56 @@
 void ofApp::setup(){
     cam.setup(1920, 1080);
     
-    colorImg.allocate(1920, 1080);
-    grayImg.allocate(1920, 1080);
+//    colorImg.allocate(1920, 1080);
+//    grayImg.allocate(1920, 1080);
 
     shapeFbo.allocate(1920, 1080);
     cameraFbo.allocate(1920, 1080);
     
     maxContours = 15;
+    minArea = 20;
+    maxArea = 200;
+    threshold = 128;
     
-    for (std::size_t i = 0; i < maxContours; i++) {
-        int randRadius = ofRandom(25, 200);
-        int randX = ofRandom(randRadius, ofGetWidth()-randRadius/2);
-        int randY = ofRandom(randRadius, ofGetHeight()-randRadius/2);
-        
-        ofPath path;
-        path.circle(randX, randY, randRadius);
-        
-        contours.push_back(path);
-    }
-    
-    threshold = 80;
+//    for (std::size_t i = 0; i < maxContours; i++) {
+//        int randRadius = ofRandom(25, 200);
+//        int randX = ofRandom(randRadius, ofGetWidth()-randRadius/2);
+//        int randY = ofRandom(randRadius, ofGetHeight()-randRadius/2);
+//
+//        ofPath path;
+//        path.circle(randX, randY, randRadius);
+//
+//        contours.push_back(path);
+//    }
     
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-//    for (std::size_t i = 0; i < contours.size(); i++) {
+    cam.update();
+    if(cam.isFrameNew()) {
+        contours.clear();
+        paths.clear();
+        contourFinder.setMinAreaRadius(minArea);
+        contourFinder.setMaxAreaRadius(maxArea);
+        contourFinder.setThreshold(threshold);
+        contourFinder.findContours(cam);
+        contourFinder.setFindHoles(true);
+
+        contours = contourFinder.getPolylines();
+
+        if (contours.size() > 0) {
+            for (std::size_t i = 0; i < contours.size(); i++) {
+                ofPath path;
+                path = polylineToPath(contours[i]);
+
+                paths.push_back(path);
+            }
+        }
+    }
+    //    for (std::size_t i = 0; i < contours.size(); i++) {
 //        contours[i].clear();
 //    }
-        cam.update();
 //    path.clear();
 //    ofEnableAlphaBlending();
     
@@ -58,12 +79,13 @@ void ofApp::draw(){
     
     shapeFbo.begin();
     ofClear(255, 255, 255, 0);
-    for (std::size_t i = 0; i < contours.size(); i++) {
-        contours[i].draw();
+    for (std::size_t i = 0; i < paths.size(); i++) {
+        paths[i].draw();
     }
+//    contourFinder.draw();
     shapeFbo.end();
     
-    shapeFbo.draw(0, 0);
+//    shapeFbo.draw(0, 0);
 //    canvas.begin();
 //    ofClear(255, 255, 255, 0);
 //    path.draw();
@@ -76,16 +98,19 @@ void ofApp::draw(){
     cameraFbo.end();
     
     cameraFbo.draw(0, 0);
-//////    cam.draw(0, 0);
-//    canvas2.begin();
-//    ofClear(255);
-//    cam.draw(0, 0);
-//    canvas2.end();
-////
-//    canvas2.draw(0, 0);
-//    //    video.draw(0, 0);
-//    grayImg.draw(0, 0);
-//    for (int i = 0; i < contourFinder.nBlobs; i++) {
-//        contourFinder.blobs[i].draw(0, 0);
-//    }
+}
+
+ofPath ofApp::polylineToPath(ofPolyline &polyline) {
+    ofPath path;
+    
+    for (int i = 0; i < polyline.size(); i++) {
+        if (i == 0) {
+            path.newSubPath();
+            path.moveTo(polyline[i]);
+        } else {
+            path.lineTo(polyline[i]);
+        }
+    }
+    
+    return path;
 }
