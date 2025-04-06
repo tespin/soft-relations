@@ -17,6 +17,7 @@ class ofApp : public ofBaseApp{
         ofPath path;
         std::vector<ofPath> paths;
         std::vector<ofPolyline> contours;
+        std::vector<std::pair<float, ofPolyline>> recordings;
         int maxContours;
     
         ofVideoGrabber cam;
